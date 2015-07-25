@@ -31,15 +31,11 @@
 
 
 
-/* Current analog output on VCO pin */
-int VCO_current_Analog_Output = VCO_ANALOG_OUTPUT_445MHz;
-
-/* Boundaries of the VCO input */
-int VCO_max_Analog_Output = VCO_ANALOG_OUTPUT_447MHz;
+int VCO_current_Analog_Output = VCO_ANALOG_OUTPUT_445MHz;          /* Current analog output on VCO pin */
+int VCO_max_Analog_Output = VCO_ANALOG_OUTPUT_447MHz;              /* Boundaries of the VCO input */
 int VCO_min_Analog_Output = VCO_ANALOG_OUTPUT_443MHz;
 
-/* Time control variables */
-unsigned long VCO_time = 0;
+unsigned long VCO_time = 0;                                        /* Time control variables */
 unsigned long VCO_lastTime = 0;
 
 void setup() {}
@@ -54,29 +50,19 @@ void setup() {}
  */ 
 void loop() {
   
-    /* Get current time */
-    VCO_time = millis();
     
-    /* Check whether we have to change the analog output value */
-    if( VCO_time - VCO_lastTime > VCO_SIGNALPERIOD_MS ){
-      
-            /* Check if the output is at maximum */
-            if( VCO_current_Analog_Output >= VCO_max_Analog_Output ){
-            
-                /* Restore the output to the VCO minimum input */
-                VCO_current_Analog_Output = VCO_min_Analog_Output;
+    VCO_time = millis();                                                /* Get current time */
+    
+    if( VCO_time - VCO_lastTime > VCO_SIGNALPERIOD_MS ){                /* Check whether we have to change the analog output value */
+    
+            if( VCO_current_Analog_Output >= VCO_max_Analog_Output ){   /* Check if the output is at maximum */
+                VCO_current_Analog_Output = VCO_min_Analog_Output;      /* Restore the output to the VCO minimum input */
                 
-            } else {
-              
-                /* Otherwise, keep adding */
-                VCO_current_Analog_Output += VCO_OUPTUT_VALUE_SHIFT;
+            } else {   
+                VCO_current_Analog_Output += VCO_OUPTUT_VALUE_SHIFT;    /* Otherwise, keep adding */
             }
-              
-        /* Refresh time variables */
-        VCO_lastTime = VCO_time;
-           
-        /* Refresh the analog output */
-        analogWrite(VCO_ANALOG_PIN,VCO_current_Analog_Output);
-        
+            
+        VCO_lastTime = VCO_time;                                        /* Refresh time variables */
+        analogWrite(VCO_ANALOG_PIN,VCO_current_Analog_Output);          /* Refresh the analog output */   
     }
 }
